@@ -1,0 +1,144 @@
+<html>
+
+<head>
+    <title>
+        GIT hub Profile Finder
+    </title>
+
+    <style>
+        .div_body 
+        {
+            background-color: black;
+            width: 100%;
+            height: 100%;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            color: yellow;
+            text-align: center;
+            font-size: 50px;
+        }
+        .div_detail 
+        {
+            background-color: black;
+            width: 100%;
+            height: 100%;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: yellow;
+            text-align: center;
+            font-size: 18px;
+        }
+        .font_1 
+        {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 20px;
+            color: yellow;
+        }
+        .button_1
+        {
+            background-color: yellow;
+            border: none;
+            width: 5%;
+            height: 5%;
+            border-radius: 20%;
+        }
+        /* .button :hover
+        {
+            cursor: pointer;
+            background-color: aqua;
+        } */
+        .search_bar
+        {
+            width: 15%;
+            height: 5%;
+            /* border-radius: 20%; */
+            border: none;
+        }
+        .div_image
+        {
+            width: 15%;
+            height: 35%;
+            margin-left: 43%;
+            border-radius: 50%;
+            /* background-color: yellow; */
+        }
+        .image_1
+        {
+            widows: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="div_body">
+        Welcome to Github Profile Finder
+        <br>
+        <form onsubmit="return submit_1()">
+            <label><a class="font_1">User name:</a>
+                <input type="text" class="search_bar" id="userName" placeholder="Enter user name">
+            </label>
+            <input type="submit" class="button_1" name="submit" value="submit"> 
+        </form>
+        <div class="div_image">
+            <img class="image_1" id="image_1">
+        </div>
+        <br>
+        <div class="div_detail" id="div_detail">
+
+        </div>
+    </div> 
+    
+    <script>
+        let submit_1 = e => {
+
+        var getuserinfo = (username) => 
+            	fetch(`https://api.github.com/users/${username}`)
+               .then(res => res.json())
+               .then(res => res)
+
+        var getuserrepos = async (username) =>
+        {
+        var userdetail = await getuserinfo(username)
+        console.log('Username : ', userdetail)
+
+//for image
+        let pic = userdetail.avatar_url
+        let a = pic.toString();
+        console.log(a);
+        document.getElementById("image_1").src = a;
+
+
+        let name = userdetail.name
+        let b = "Name : " + name.toString();
+        console.log(b);
+
+        let id = userdetail.id
+        let c = "ID : " + id.toString();
+        console.log(c);
+
+        let created_on = userdetail.created_at
+        let d = "Created On : " + created_on.toString();
+        console.log(d);
+
+
+        let public_repos = userdetail.public_repos
+        let e = "Public Repos : " + public_repos.toString();
+        console.log(e);
+
+        let data = b+"<br>"+"<br>"+c+"<br>"+"<br>"+d+"<br>"+"<br>"+e;
+
+
+        document.getElementById("div_detail").innerHTML = data;
+    }
+
+        let uname = document.querySelector("#userName").value
+
+        getuserrepos(uname);
+
+        return false
+
+        }
+    </script>
+
+</body>
+</html>
